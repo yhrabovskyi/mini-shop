@@ -1,0 +1,30 @@
+<project name="shop-properties" basedir=".">
+  
+  <property name="tomcat" location="/home/user/tomcat" />
+  
+  <property name="lib" location="lib" />
+  <property name="javadb-driver" value="${lib}/derby.jar" />
+  
+  <path id="CLASSPATH">
+    <pathelement location="${javadb-driver}"/>
+  </path>
+  
+  <property name="classes" location="classes" />
+  <property name="etc" location="etc" />
+  <property name="src" location="src" />
+  <property name="web" location="web" />
+  <property name="shop-dir" location="webapps/shop" />
+  <property name="web-inf" location="${shop-dir}/WEB-INF" />
+  <property name="sql-file" value="create-populate-tables.sql" />
+  <property name="servlet-api" value="/usr/share/tomcat7/lib/servlet-api.jar" />
+  
+  <property name="DBNAME" value="shopdb" />
+  <property name="DBDRIVER" value="org.apache.derby.jdbc.EmbeddedDriver" />
+  <property name="DBUSER" value="" />
+  <property name="DBPASSWORD" value="" />
+  <property name="DBDELIMITER" value=";" />
+  <property name="DBURLNEWDB" value="jdbc:derby:${DBNAME};create=true" />
+  <property name="DBURL" value="jdbc:derby:${DBNAME}" />
+  
+</project>
+

@@ -1,0 +1,63 @@
+<project name="shop" default="init" basedir=".">
+
+  <import file="build-properties.xml" />
+  
+  <target name="init">
+    <mkdir dir="${web-inf}/classes" />
+    <mkdir dir="${classes}" />
+    <mkdir dir="${web-inf}/lib" />
+  </target>
+  
+  <target name="compile">
+    <javac srcdir="${src}" destdir="${classes}" includeantruntime="no" classpath="${servlet-api}" />
+  </target>
+  
+  <target name="prepare-tomcat-file-structure">
+    <!-- copy *.jsp files -->
+    <copy file="${web}/default.jsp" todir="${shop-dir}" />
+    <copy todir="${web-inf}">
+      <fileset dir="${web}">
+        <exclude name="default.jsp" />
+      </fileset>
+    </copy>
+    <!-- copy web.xml file -->
+    <copy file="${etc}/web.xml" todir="${web-inf}" />
+    <!-- copy *.class files -->
+    <copy todir="${web-inf}/classes">
+      <fileset dir="${classes}" />
+    </copy>
+    <!-- copy lib -->
+    <copy todir="${web-inf}/lib">
+      <fileset dir="${lib}" />
+    </copy>
+  </target>
+  
+  <target name="create-db-tables">
+    <sql driver="${DBDRIVER}" url="${DBURLNEWDB}" userid="${DBUSER}"
+         password="${DBPASSWORD}" delimiter="${DBDELIMITER}"
+         classpathref="CLASSPATH">
+      <transaction src="${sql-file}" />
+    </sql>
+  </target>
+  
+  <target name="move-file-structure">
+    <move file="${DBNAME}" todir="${tomcat}" />
+    <move file="webapps" todir="${tomcat}" />
+  </target>
+  
+  <target name="setup">
+    <antcall target="init" />
+    <antcall target="compile" />
+    <antcall target="prepare-tomcat-file-structure" />
+    <antcall target="create-db-tables" />
+    <antcall target="move-file-structure" />
+  </target>
+  
+  <target name="clean">
+    <delete dir="${tomcat}/${DBNAME}" />
+    <delete dir="${tomcat}/webapps/shop" />
+    <delete dir="${basedir}" />
+  </target>
+  
+</project>
+
